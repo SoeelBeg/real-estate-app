@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="images/logo.png">
+    <title>Real Estate App</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* General Styles */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Verdana, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        /* Navbar Styles */
+        nav {
+            position: relative;
+            padding: 0.1rem 1rem;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            /* Ensure navbar stays above the slideshow */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Navbar logo (Property icon) */
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            padding-left: 20px;
+            gap: 0.2rem;
+        }
+
+        .navbar-logo img {
+            width: 100%;
+            max-width: 90px;
+            /* Adjust based on logo size */
+            height: auto;
+            cursor: pointer;
+        }
+
+        /* Menu icon styles */
+        .menu-icon {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #007BFF;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .menu-icon:hover {
+            transform: rotate(90deg);
+            /* Add rotation effect on hover */
+            color: #007BFF;
+            /* Change color on hover */
+            cursor: pointer;
+        }
+
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin: 0.5rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #007BFF;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            transition: background-color 0.3s, color 0.3s;
+            border-radius: 5px;
+        }
+
+        .nav-links a:hover {
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+        /* Mobile styles */
+        @media (max-width: 680px) {
+
+            header h1{
+                font-size: 25px;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+
+            /* Hide nav links by default */
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                align-items: center;
+                max-height: 0;
+                overflow: hidden;
+                width: 100%;
+                background-color: #fff;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            }
+
+            .navbar-logo img {
+                max-width: 80px;
+                /* Adjust logo size for smaller screens */
+            }
+
+            /* Show hamburger menu icon */
+            .menu-icon {
+                display: block;
+            }
+
+            /* Show nav links when menu icon is clicked */
+            .nav-links.open {
+                display: block;
+                max-height: 300px;
+                /* Control the transition effect */
+            }
+            footer {
+                font-size: 0.8rem;
+                /* Slightly smaller font on smaller screens */
+                padding: 0.8rem 0;
+                /* Adjust padding */
+            }
+
+            .slideshow-container img{
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        /* Slideshow Styles */
+        .slideshow-container {
+            max-width: 100%;
+            position: relative;
+            margin: auto;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .mySlides {
+            display: none;
+            width: 100%;
+        }
+
+        .slideshow-container img {
+            width: 100%;
+            height: auto;
+            height: 70vh;
+            object-fit: cover;
+        }
+
+        .text {
+            color: #f2f2f2;
+            background-color: rgba(0, 0, 0, 0.6);
+            font-size: 1rem;
+            padding: 10px;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        .dot-container {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .dot {
+            height: 15px;
+            width: 15px;
+            margin: 0 5px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+            transition: background-color 0.6s;
+        }
+
+        .dot:hover,
+        .dot.active {
+            background-color: #717171;
+        }
+
+        /* Main Content Styles */
+        main {
+            padding: 2rem 1rem;
+            margin: 1rem auto;
+            max-width: 1200px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .about-section {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .about-content {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .about-img {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 10px;
+            height: auto;
+        }
+
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .property-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .property-card:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .property-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px 10px 0 0;
+        }
+
+        footer {
+            background-color: #f8f8f8;
+            color: #555;
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Welcome to the Real Estate App</h1>
+    </header>
+    <nav>
+        <div class="navbar-logo">
+            <img src="images/logo.png" alt="logo">
+        </div>
+
+        <button class="menu-icon" aria-label="Toggle Navigation">&#9776;</button>
+
+        <ul class="nav-links">
+            <li><a href="pages/property-list.html">List All Properties</a></li>
+            <li><a href="pages/add-property.html">Add Property</a></li>
+            <li><a href="pages/update-property.html">Update Property</a></li>
+            <li><a href="pages/delete-property.html">Delete Property</a></li>
+        </ul>
+    </nav>
+
+    <div class="slideshow-container">
+        <div class="mySlides">
+            <img src="images/6.jpg" alt="Beautiful Home">
+            <div class="text">Beautiful Home</div>
+        </div>
+        <div class="mySlides">
+            <img src="images/12.jpg" alt="Interior View">
+            <div class="text">Interior View</div>
+        </div>
+        <div class="mySlides">
+            <img src="images/5.jpg" alt="Villa">
+            <div class="text">Villa</div>
+        </div>
+    </div>
+    <div class="dot-container">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+    </div>
+
+    <main>
+        <section class="about-section">
+            <div class="about-content">
+                <h2>More Than Just Properties</h2>
+                <p>
+                    At RealEstate, we connect you with properties that fit your needs and aspirations.
+                </p>
+            </div>
+            <img src="images/9.jpg" alt="A happy family in their home" class="about-img">
+        </section>
+
+        <section class="featured-properties">
+            <h2>Featured Listings</h2>
+            <div class="properties-grid">
+                <div class="property-card">
+                    <img src="images/11.jpg" alt="Beautiful apartment" class="property-img">
+                    <h3>Beautifull Villa</h3>
+                    <p>11 Beds | 4 Baths | $500,000</p>
+                </div>
+                <div class="property-card">
+                    <img src="images/8.jpg" alt="Modern house" class="property-img">
+                    <h3>Modern House</h3>
+                    <p>4 Beds | 2 Baths | $300,000</p>
+                </div>
+                <div class="property-card">
+                    <img src="images/7.jpg" alt="Beachfront Villa" class="property-img">
+                    <h3>Luxary House</h3>
+                    <p>5 Beds | 2 Baths | $1,200,000</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Property Management. <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </footer>
+
+    <script>
+        // Slideshow script
+        let slideIndex = 0;
+
+        function showSlides() {
+            const slides = document.querySelectorAll('.mySlides');
+            const dots = document.querySelectorAll('.dot');
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) {
+                slideIndex = 1;
+            }
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
+            setTimeout(showSlides, 3000); // Change slide every 3 seconds
+        }
+
+        showSlides();
+
+        // Hamburger Menu Toggle JavaScript
+        const menuIcon = document.querySelector('.menu-icon');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuIcon.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+    </script>
+</body>
+
+</html>
