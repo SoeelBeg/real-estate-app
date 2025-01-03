@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="../images/logo.png">
+    <title>Property List</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+
+        a:hover {
+            color: #0056b3;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #007BFF;
+            color: white;
+            padding: 1rem 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        /* Navbar Styles */
+        nav {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f8f8f8;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .menu-icon {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #007BFF;
+        }
+
+        .menu-icon:focus {
+            outline: none;
+        }
+
+        .menu-icon:hover {
+            color: #0056b3;
+        }
+
+        .nav-links.open {
+            flex-direction: column;
+            gap: 1rem;
+            background-color: #f8f8f8;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Property List Styles */
+        #property-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem;
+        }
+
+        .property-item {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .property-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .property-item h2 {
+            font-size: 1.5rem;
+            margin: 0;
+            color: #333;
+        }
+
+        .property-item p {
+            color: #666;
+            font-size: 1rem;
+            margin: 0.5rem 0;
+        }
+
+        .property-item img {
+            max-width: 100%;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .property-item img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #f8f8f8;
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: #555;
+            box-shadow: 5px 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        footer a {
+            color: #007BFF;
+        }
+
+        footer a:hover {
+            color: #0056b3;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .menu-icon {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .nav-links.open {
+                display: flex;
+            }
+
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            footer {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>Property List</h1>
+    </header>
+
+    <!-- Navbar -->
+    <nav>
+        <button class="menu-icon" aria-label="Toggle Navigation">&#9776;</button>
+        <div class="nav-links">
+            <a href="../index.html">Home</a>
+            <a href="./add-property.html">Add Property</a>
+            <a href="./update-property.html">Update Property</a>
+            <a href="./delete-property.html">Delete Property</a>
+        </div>
+    </nav>
+
+    <!-- Property List -->
+    <div id="property-list">
+        <!-- Property list will be populated here -->
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Property Management. <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </footer>
+
+    <script>
+        const BASE_URL = "http://localhost:8000/api";
+
+        // Fetch properties and populate the property list
+        async function loadProperties() {
+            try {
+                const response = await fetch(`${BASE_URL}/properties`);
+                if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+                const properties = await response.json();
+
+                const propertyListDiv = document.getElementById("property-list");
+                if (properties.length === 0) {
+                    propertyListDiv.innerHTML = "<p>No properties found.</p>";
+                    return;
+                }
+
+                let html = "";
+                properties.forEach((property) => {
+                    html += `
+                        <div class="property-item">
+                            <h2>${property.title}</h2>
+                            <p><strong>ID:</strong> ${property._id}</p>
+                            <p><strong>Location:</strong> ${property.location}</p>
+                            <p><strong>Price:</strong> $${property.price}</p>
+                            <p><strong>Type:</strong> ${property.propertyType}</p>
+                            <p><strong>Description:</strong> ${property.description}</p>
+                            <p><strong>User ID:</strong> ${property.user_id}</p>
+                            <img src="${property.image}" alt="${property.title}">
+                            <p class="additional-info">This property is a great investment opportunity located in a prime area!</p>
+                        </div>
+                    `;
+                });
+                propertyListDiv.innerHTML = html;
+            } catch (error) {
+                console.error("Error loading properties:", error);
+                document.getElementById("property-list").innerHTML = `<p>Error: ${error.message}</p>`;
+            }
+        }
+
+        // Load properties on page load
+        loadProperties();
+
+        // JavaScript for Hamburger Menu Toggle
+        document.addEventListener("DOMContentLoaded", () => {
+            const menuIcon = document.querySelector('.menu-icon');
+            const navLinks = document.querySelector('.nav-links');
+
+            menuIcon.addEventListener('click', () => {
+                navLinks.classList.toggle('open');
+            });
+        });
+    </script>
+</body>
+</html>
