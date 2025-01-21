@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"log"
-	"net/http"
 	"os"
 	"real-estate-app/backend/config"
 	"real-estate-app/backend/routes"
@@ -45,5 +44,6 @@ func main() {
 	if port == "" {
 		port = "8000" // Default port if not specified
 	}
-	http.ListenAndServe(":"+port, nil)
+	log.Printf("Server running on port %s", port)
+	router.Run(":" + port) // Run the server on the Render-specified port
 }
