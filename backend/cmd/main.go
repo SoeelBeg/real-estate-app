@@ -41,7 +41,7 @@ func main() {
 	// Start the server
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080" // Fallback for local testing
+		port = "8000" // Fallback for local testing
 	}
 	router.Run(":" + port)
 }
