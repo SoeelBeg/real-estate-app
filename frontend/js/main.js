@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8000/api";
+const BASE_URL = "https://real-estate-app-1-0vej.onrender.com/";
 
 // Utility function for API requests
 async function apiRequest(endpoint, method = "GET", data = null) {
