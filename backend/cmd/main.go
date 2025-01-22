@@ -40,11 +40,10 @@ func main() {
 	routes.SetupRoutes(api)
 
 	// Start the server
-	port := os.Getenv("PORT")
+	port := os.Getenv("PORT") // Dynamic port from Render
 	if port == "" {
 		port = "8000" // Default port if not specified
 	}
 	log.Printf("Server running on port %s", port)
-	router.Run(":" + port)
-
+	router.Run(":" + port) // Run the server on the Render-specified port
 }
