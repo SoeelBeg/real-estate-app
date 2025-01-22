@@ -1,20 +1,16 @@
 services:
-  - name: real-estate-backend
-    type: web
+  - type: web
+    name: real-estate-app
     env: go
-    build:
-      cmd: go build -o main ./backend/cmd
-    start:
-      cmd: ./main
+    buildCommand: "go build -o main ./cmd/main.go"
+    startCommand: "./app"
+    region: oregon
     envVars:
       - key: PORT
-        value: 8000
-      - key: MONGO_URI
-        value: "mongodb+srv://SoeelBeg:SOEELbeg@cluster0.qmoic.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-
-  - name: real-estate-frontend
-    type: static
-    env: static
-    build:
-      cmd: npm install && npm run build
-    staticPublishPath: ./frontend
+        value: "8000"  # Render assigns a dynamic port, default is 8000
+    
+databases:
+  - type: mongo
+    name: realestate
+    region: oregon
+    connectionURI: mongodb+srv://SoeelBeg:SOEELbeg@cluster0.qmoic.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
