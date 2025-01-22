@@ -3,8 +3,7 @@ package main
 import (
 	"context"
 	"log"
-	"os"
-	"real-estate-app/backend/config"
+	"real-estate-app/backend/config" //with backend
 	"real-estate-app/backend/routes"
 
 	"github.com/gin-contrib/cors"
@@ -40,10 +39,6 @@ func main() {
 	routes.SetupRoutes(api)
 
 	// Start the server
-	port := os.Getenv("PORT") // Dynamic port from Render
-	if port == "" {
-		port = "8000" // Default port if not specified
-	}
-	log.Printf("Server running on port %s", port)
-	router.Run(":" + port) // Run the server on the Render-specified port
+	log.Println("Server running on port 8000")
+	router.Run(":8000")
 }
