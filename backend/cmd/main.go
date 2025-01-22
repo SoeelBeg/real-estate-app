@@ -26,22 +26,24 @@ func main() {
 	router.Use(cors.Default())
 
 	// Serve frontend static files
-	router.Static("/css", "./frontend/css")                     // Serve CSS from frontend folder
-	router.Static("/js", "./frontend/js")                       // Serve JS files from frontend folder
-	router.Static("/pages", "./frontend/pages")                 // Serve pages
-	router.Static("/uploads", "./uploads")                      // Serve files from uploads folder
-	router.StaticFile("/favicon.ico", "./frontend/favicon.ico") // Serve favicon
-	router.StaticFile("/", "./frontend/index.html")             // Serve homepage
-	router.Static("/images", "./frontend/images")               // Serve images
+	router.Static("../css", "../frontend/css")
+	router.Static("../js", "../frontend/js")
+	router.Static("../pages", "../frontend/pages")
+	router.Static("./uploads", "./uploads") // Serve files from the uploads folder
+	router.StaticFile("../", "../frontend/index.html")
+	router.StaticFile("/favicon.ico", "./frontend/favicon.ico")
+	router.Static("../images", "../frontend/images")
+	router.StaticFile("/index.html", "../frontend/index.html")
 
 	// Set up API routes under /api
 	api := router.Group("/api")
 	routes.SetupRoutes(api)
 
 	// Start the server
-	port := os.Getenv("PORT")
+	port := os.Getenv("PORT") // Dynamic port from Render
 	if port == "" {
-		port = "8000" // Fallback for local testing
+		port = "8000" // Default port if not specified
 	}
-	router.Run(":" + port)
+	log.Printf("Server running on port %s", port)
+	router.Run(":" + port) // Run the server on the Render-specified port
 }
