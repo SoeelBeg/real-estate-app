@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"log"
+	"os"
 	"real-estate-app/backend/config" //with backend
 	"real-estate-app/backend/routes"
 
@@ -38,7 +39,11 @@ func main() {
 	api := router.Group("/api")
 	routes.SetupRoutes(api)
 
-	// Start the server
-	log.Println("Server running on port 8000")
-	router.Run(":8000")
+	// Inside main function
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8000" // Default port if not set
+	}
+
+	router.Run(":" + port)
 }
