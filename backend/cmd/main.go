@@ -42,8 +42,8 @@ func main() {
 	// Inside main function
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8000" // Default port if not set
+		port = "8000" // Default port for local testing
 	}
-
 	router.Run(":" + port)
+
 }
