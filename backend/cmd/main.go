@@ -2,10 +2,10 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"os"
 	"real-estate-app/backend/config" //with backend
-	"real-estate-app/backend/routes"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -35,15 +35,13 @@ func main() {
 	router.Static("../images", "../frontend/images")
 	router.StaticFile("/index.html", "../frontend/index.html")
 
-	// Set up API routes under /api
-	api := router.Group("/api")
-	routes.SetupRoutes(api)
-
-	// Inside main function
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8000" // Default port for local testing
+		port = "8000" // Default port agar Render ne assign nahi kiya
 	}
-	router.Run(":" + port)
+
+	// Server start karein
+	fmt.Println("🚀 Server running on port:", port)
+	log.Fatal(router.Run(":" + port))
 
 }
