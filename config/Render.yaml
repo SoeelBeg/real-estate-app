@@ -2,13 +2,13 @@ services:
   - type: web
     name: real-estate-app
     env: go
-    buildCommand: "go build -o main ./cmd/main.go"
+    buildCommand: "go build -o main ./backend/cmd/main.go"
     startCommand: "./app"
     region: oregon
     envVars:
       - key: PORT
-        value: "8000"  # Render assigns a dynamic port, default is 8000
-    
+        value: "8000"  # Render automatically assigns a dynamic port, but default is 8000
+
 databases:
   - type: mongo
     name: realestate
