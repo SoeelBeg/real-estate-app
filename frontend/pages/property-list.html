@@ -209,102 +209,56 @@
     </footer>
 
     <script>
-        const BASE_URL = "https://real-estate-app-jiec.onrender.com/api";
-    
-        // Utility function for API requests
-        async function apiRequest(endpoint, method = "GET", data = null) {
-            const options = { method, headers: {} };
-    
-            if (method !== "GET" && data) {
-                if (data instanceof FormData) {
-                    options.body = data; // For file uploads
-                } else {
-                    options.body = JSON.stringify(data);
-                    options.headers["Content-Type"] = "application/json";
-                }
-            }
-    
-            try {
-                const response = await fetch(`${BASE_URL}${endpoint}`, options);
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || `HTTP Error: ${response.status}`);
-                }
-                return await response.json();
-            } catch (error) {
-                console.error("API Request Error:", error);
-                return { error: error.message };
-            }
-        }
-    
-        // Fetch and display properties
+        const BASE_URL = "http://localhost:8000/api";
+
+        // Fetch properties and populate the property list
         async function loadProperties() {
-            const properties = await apiRequest("/properties", "GET");
-            
-            const propertyListDiv = document.getElementById("property-list");
-            if (!properties || properties.length === 0) {
-                propertyListDiv.innerHTML = "<p>No properties found.</p>";
-                return;
-            }
-    
-            propertyListDiv.innerHTML = properties.map(property => `
-                <div class="property-item">
-                    <h2>${property.title}</h2>
-                    <p><strong>ID:</strong> ${property._id}</p>
-                    <p><strong>Location:</strong> ${property.location}</p>
-                    <p><strong>Price:</strong> $${property.price}</p>
-                    <p><strong>Type:</strong> ${property.propertyType}</p>
-                    <p><strong>Description:</strong> ${property.description}</p>
-                    <p><strong>User ID:</strong> ${property.user_id}</p>
-                    <img src="${property.image}" alt="${property.title}">
-                </div>
-            `).join('');
-        }
-    
-        // Add Property
-        async function addProperty(formData) {
-            return await apiRequest("/properties", "POST", formData);
-        }
-    
-        // Delete Property
-        async function deleteProperty(id) {
-            if (!/^[a-fA-F0-9]{24}$/.test(id)) {
-                alert("Invalid Property ID format.");
-                return;
-            }
-            return await apiRequest(`/properties/${id}`, "DELETE");
-        }
-    
-        // Handle form submission for adding a property
-        document.addEventListener("DOMContentLoaded", () => {
-            loadProperties();
-    
-            const form = document.getElementById("add-property-form");
-            if (form) {
-                form.addEventListener("submit", async (e) => {
-                    e.preventDefault();
-    
-                    const formData = new FormData(form);
-                    formData.append("user_id", "12345"); // Example static user_id
-    
-                    const response = await addProperty(formData);
-                    alert(response.message || "Property added successfully!");
-    
-                    loadProperties(); // Refresh list
+            try {
+                const response = await fetch(`${BASE_URL}/properties`);
+                if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+                const properties = await response.json();
+
+                const propertyListDiv = document.getElementById("property-list");
+                if (properties.length === 0) {
+                    propertyListDiv.innerHTML = "<p>No properties found.</p>";
+                    return;
+                }
+
+                let html = "";
+                properties.forEach((property) => {
+                    html += `
+                        <div class="property-item">
+                            <h2>${property.title}</h2>
+                            <p><strong>ID:</strong> ${property._id}</p>
+                            <p><strong>Location:</strong> ${property.location}</p>
+                            <p><strong>Price:</strong> $${property.price}</p>
+                            <p><strong>Type:</strong> ${property.propertyType}</p>
+                            <p><strong>Description:</strong> ${property.description}</p>
+                            <p><strong>User ID:</strong> ${property.user_id}</p>
+                            <img src="${property.image}" alt="${property.title}">
+                            <p class="additional-info">This property is a great investment opportunity located in a prime area!</p>
+                        </div>
+                    `;
                 });
+                propertyListDiv.innerHTML = html;
+            } catch (error) {
+                console.error("Error loading properties:", error);
+                document.getElementById("property-list").innerHTML = `<p>Error: ${error.message}</p>`;
             }
-        });
-    
+        }
+
+        // Load properties on page load
+        loadProperties();
+
         // JavaScript for Hamburger Menu Toggle
         document.addEventListener("DOMContentLoaded", () => {
             const menuIcon = document.querySelector('.menu-icon');
             const navLinks = document.querySelector('.nav-links');
-    
+
             menuIcon.addEventListener('click', () => {
                 navLinks.classList.toggle('open');
             });
         });
     </script>
-    
 </body>
 </html>
