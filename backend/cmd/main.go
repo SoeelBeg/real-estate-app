@@ -28,7 +28,7 @@ func main() {
 	// Serve frontend static files
 	router.Static("/css", "./frontend/css")
 	router.Static("../js", "../frontend/js")
-	router.Static("/pages", "../frontend/pages")
+	router.Static("/pages", "./frontend/pages")
 	router.Static("./uploads", "./uploads") // Serve files from the uploads folder
 	router.StaticFile("../", "../frontend/index.html")
 	router.StaticFile("/favicon.ico", "./frontend/favicon.ico")
