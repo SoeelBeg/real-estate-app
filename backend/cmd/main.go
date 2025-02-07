@@ -25,20 +25,10 @@ func main() {
 	// Enable CORS for all origins
 	router.Use(cors.Default())
 
-	// // Serve frontend static files
-	// router.Static("/css", "./frontend/css")
-	// router.Static("../js", "../frontend/js")
-	// router.Static("/pages", "./frontend/pages")
-	// router.Static("./uploads", "./uploads") // Serve files from the uploads folder
-	// router.StaticFile("../", "../frontend/index.html")
-	// router.StaticFile("/favicon.ico", "./frontend/favicon.ico")
-	// router.Static("../images", "../frontend/images")
-	// router.StaticFile("/index.html", "../frontend/index.html")
-
 	// Serve frontend static files
-	router.Static("../css", "../frontend/css")
+	router.Static("/css", "./frontend/css")
 	router.Static("../js", "../frontend/js")
-	router.Static("../pages", "../frontend/pages")
+	router.Static("/pages", "./frontend/pages")
 	router.Static("./uploads", "./uploads") // Serve files from the uploads folder
 	router.StaticFile("../", "../frontend/index.html")
 	router.StaticFile("/favicon.ico", "./frontend/favicon.ico")
