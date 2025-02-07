@@ -1,0 +1,39 @@
+# Go build artifacts
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Dependency directories
+/vendor/
+
+# Go module files
+go.sum
+go.mod
+
+# Environment variables
+.env
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Log files
+*.log
+
+# Frontend build files (if applicable)
+frontend/dist/
+frontend/node_modules/
+
+# Uploads folder
+/backend/uploads/
+
+
+# Other common temporary files
+.DS_Store
+Thumbs.db
