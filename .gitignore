@@ -15,7 +15,6 @@ go.sum
 go.mod
 
 # Environment variables
-backend/.env
 .env
 
 # IDE and editor files
