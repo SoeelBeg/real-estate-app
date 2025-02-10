@@ -32,7 +32,7 @@ func main() {
 	router.Static("./uploads", "./uploads") // Serve files from the uploads folder
 	router.StaticFile("../", "../frontend/index.html")
 	router.StaticFile("/favicon.ico", "./frontend/favicon.ico")
-	router.Static("../images", "../frontend/images")
+	router.Static("/images", "../frontend/images")
 	router.StaticFile("/index.html", "../frontend/index.html")
 
 	// Set up API routes under /api
